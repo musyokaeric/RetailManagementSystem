@@ -94,3 +94,6 @@ public class Bootstrapper : BootstrapperBase
 
 ## 05 - Dependency Injecion in WPF 
 Additional code in the **Bootstrapper.cs** file that includes the Simple Container DI system.
+
+## 06 - Register SQL Database Tables 
+Created tables in the **RMSDta** SQL Project and published them to the local database by launching **RMSData.publish.xml** file located in the **PublishLocations** folder.
