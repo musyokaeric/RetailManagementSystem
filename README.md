@@ -65,7 +65,7 @@ Created a new WPF (.NET framework) project and changed the Assembly name in the 
 **Bootstrapper.cs**
 
 ```
- public class Bootstrapper : BootstrapperBase
+public class Bootstrapper : BootstrapperBase
 {
     public Bootstrapper()
     {
@@ -91,3 +91,6 @@ Created a new WPF (.NET framework) project and changed the Assembly name in the 
     </ResourceDictionary.MergedDictionaries>
 </ResourceDictionary>
 ```
+
+## 05 - Dependency Injecion in WPF 
+Additional code in the **Bootstrapper.cs** file that includes the Simple Container DI system.
