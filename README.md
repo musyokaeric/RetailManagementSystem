@@ -51,3 +51,43 @@ c.PrettyPrint();
 ```
 
 - Use Swagger in ASP.NET WebAPI with token-based authentication (Similar to Postman token authentication, but easy to use) - https://stackoverflow.com/questions/51117655/how-to-use-swagger-in-asp-net-webapi-2-0-with-token-based-authentication
+
+## 03 - Created the SQL Database Project
+Created and published the SQL database project. When publishing, set the database name and connection, and save the profile in the PublushLocation folder.
+
+## 04 - Created the WPF Project with MVVM setup 
+Created a new WPF (.NET framework) project and changed the Assembly name in the Properties setting which will serve as the .exe name when the app is published.
+
+- Created MVVM files and folders and deleted the **MainPage.xaml** file.
+
+- Installed Caliburn.Micro package from NPM and created the Boostrapper.cs file to configure ShellView.xaml as the launch file.
+
+**Bootstrapper.cs**
+
+```
+ public class Bootstrapper : BootstrapperBase
+{
+    public Bootstrapper()
+    {
+        Initialize();
+    }
+
+    protected override void OnStartup(object sender, StartupEventArgs e)
+    {
+        //DisplayRootViewFor<ShellViewModel>();
+        DisplayRootViewForAsync<ShellViewModel>();
+    }
+}
+```
+
+- In **App.xaml**, delete the **StartupUri** property and add the following to the **Application.Resources** tag
+
+```
+<ResourceDictionary>
+    <ResourceDictionary.MergedDictionaries>
+        <ResourceDictionary>
+            <local:Bootstrapper x:Key="Bootstrapper" />
+        </ResourceDictionary>
+    </ResourceDictionary.MergedDictionaries>
+</ResourceDictionary>
+```
