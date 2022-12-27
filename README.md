@@ -97,3 +97,81 @@ Additional code in the **Bootstrapper.cs** file that includes the Simple Contain
 
 ## 06 - Register SQL Database Tables 
 Created tables in the **RMSDta** SQL Project and published them to the local database by launching **RMSData.publish.xml** file located in the **PublishLocations** folder.
+
+## 07 - Create and Wipre up WPF Login Form to API
+**ShellView.xaml** code used to launch **LoginView.xaml** WPF Window
+
+```
+<DockPanel>
+    <Menu DockPanel.Dock="Top" FontSize="15">
+        <MenuItem Header="_File">
+        </MenuItem>
+
+        <MenuItem Header="_Account">
+                <MenuItem x:Name="LoginScreen" Header="_Login" />
+        </MenuItem>
+    </Menu>
+
+    <Grid>
+        <ContentControl x:Name="ActiveItem" Margin="5" />
+    </Grid>
+</DockPanel>
+
+```
+**ShellViewModel.cs**
+```
+using Caliburn.Micro;
+
+namespace RMSDesktopUI.ViewModels
+{
+    public class ShellViewModel : Conductor<object>
+    {
+        private LoginViewModel _loginViewModel;
+        public ShellViewModel(LoginViewModel loginViewModel)
+        {
+            _loginViewModel = loginViewModel;
+            ActivateItemAsync(_loginViewModel);
+        }
+    }
+}
+```
+Caliburn.Micro support for PasswordBox. The PasswordBox does not bind well with MVVM (making it less secure), but this approach is to make sure that the password is never stored in clear text
+
+
+https://stackoverflow.com/questions/30631522/caliburn-micro-support-for-passwordbox
+
+
+Wiring up the login form to the API (authenticate against the database)
+- Installed **Microsoft.AspNet.WebAPI.Client (Newtonsoft.json)** package
+- Created **APIHelper.cs** helper class and **AuthenticatedUser.cs** model class
+- Updated the solutions property to run the WPF and API simultaneously and updated the **App.config** file
+```
+<appSettings>
+	<add key="api" value="https://localhost:44341/" />
+</appSettings>
+```
+- Updated the LoginViewModel class
+```
+private IAPIHelper _apiHelper;
+
+...
+
+public LoginViewModel(IAPIHelper aPIHelper)
+{
+    _apiHelper = aPIHelper;
+}
+
+...
+
+public async Task LogIn()
+{
+    try
+    {
+        var result = await _apiHelper.Authenticate(UserName, Password);
+    }
+    catch (Exception ex)
+    {
+        Console.WriteLine(ex.Message);
+    }
+}
+```
