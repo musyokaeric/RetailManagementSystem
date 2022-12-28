@@ -175,3 +175,64 @@ public async Task LogIn()
     }
 }
 ```
+- Updated the Bootstrapper.cs file
+```
+_container
+    .Singleton<IWindowManager, WindowManager>()
+    .Singleton<IEventAggregator, EventAggregator>()
+    .Singleton<IAPIHelper, APIHelper>();
+```
+
+## 08 - Login Form Error Handling 
+A new label added to display an error when attempting to log in.
+- Updated the label's visibility binding properties
+```
+Visibility="{Binding IsErrorVisible, Converter={StaticResource BooleanToVisibilityConverter}, FallbackValue=Collapsed}"
+```
+- Updated the **App.xaml** file
+```
+<BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter" />
+```
+- Updated the **LoginViewModel** class
+```
+public bool IsErrorVisible
+{
+    get 
+    {
+        bool output = false;
+        if (ErrorMessage?.Length > 0)
+        {
+            output = true;
+        }
+        return output;
+    }
+}
+
+private string _errorMessage;
+
+public string ErrorMessage
+{
+    get { return _errorMessage; }
+    set 
+    {
+        _errorMessage = value;
+        NotifyOfPropertyChange(() => IsErrorVisible);
+        NotifyOfPropertyChange(() => ErrorMessage);
+    }
+}
+
+...
+
+public async Task LogIn()
+{
+    try
+    {
+        ErrorMessage = "";
+        var result = await _apiHelper.Authenticate(UserName, Password);
+    }
+    catch (Exception ex)
+    {
+        ErrorMessage = ex.Message;
+    }
+}
+```
