@@ -345,7 +345,7 @@ public async Task GetLoggedInUserInfo(string token)
     }
 }
 ```
-- Updated the **Bootrstapper** file
+- Updated the **Bootstapper** file
 ```
  _container
     .Singleton<IWindowManager, WindowManager>()
@@ -353,3 +353,6 @@ public async Task GetLoggedInUserInfo(string token)
     .Singleton<ILoggedInUserModel, LoggedInUserModel>()
     .Singleton<IAPIHelper, APIHelper>();
 ```
+
+## 09 - Sales Page Creation
+Added a sales page XAML page and the supporting View Model. Caliburn.Micro is supported by inheriting the **Sreen** class
