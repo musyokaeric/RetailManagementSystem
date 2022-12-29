@@ -9,6 +9,10 @@ Project("{00D1A9C2-B5F0-4AF3-8072-F6C62B433612}") = "RMSData", "RMSData\RMSData.
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RMSDesktopUI", "RMSDesktopUI\RMSDesktopUI.csproj", "{DFB7F500-0C23-47ED-B0C1-D0F7D3FA37EE}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RMSDataManager.Library", "RMSDataManager.Library\RMSDataManager.Library.csproj", "{5ECAF18F-1930-4F4B-8DBA-E476AED48589}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RMSDesktopUI.Library", "RMSDesktopUI.Library\RMSDesktopUI.Library.csproj", "{A7DCEA7A-6C53-47DE-B1D2-C7A7E6635CB3}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -29,6 +33,14 @@ Global
 		{DFB7F500-0C23-47ED-B0C1-D0F7D3FA37EE}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{DFB7F500-0C23-47ED-B0C1-D0F7D3FA37EE}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{DFB7F500-0C23-47ED-B0C1-D0F7D3FA37EE}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5ECAF18F-1930-4F4B-8DBA-E476AED48589}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5ECAF18F-1930-4F4B-8DBA-E476AED48589}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5ECAF18F-1930-4F4B-8DBA-E476AED48589}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5ECAF18F-1930-4F4B-8DBA-E476AED48589}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A7DCEA7A-6C53-47DE-B1D2-C7A7E6635CB3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A7DCEA7A-6C53-47DE-B1D2-C7A7E6635CB3}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A7DCEA7A-6C53-47DE-B1D2-C7A7E6635CB3}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A7DCEA7A-6C53-47DE-B1D2-C7A7E6635CB3}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

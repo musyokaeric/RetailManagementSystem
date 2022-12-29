@@ -236,3 +236,120 @@ public async Task LogIn()
     }
 }
 ```
+
+## 09 - Getting User Data upon Login
+
+Created a **spUserLookup** SQL stored procedure in the **RMSData** database project
+```
+CREATE PROCEDURE [dbo].[spUserLookup]
+	@Id nvarchar(128)
+AS
+begin
+	set nocount on;
+
+	SELECT Id, FirstName, LastName, EmailAddress, CreatedDate
+	FROM [User]
+	WHERE Id = @Id;
+end
+```
+Created a UserController class in **RMSDataManager** (Web API) project to pull user login data
+```
+[Authorize]
+[RoutePrefix("api/User")]
+public class UserController : ApiController
+{
+    [HttpGet]
+    public UserModel GetById()
+    {
+        string id = RequestContext.Principal.Identity.GetUserId();
+        UserData data = new UserData();
+
+        return data.GetUserById(id).First();
+    }
+}
+```
+Updated the **Web.config** file to include the connection string to the RMS database
+```
+<add name="RMSData" connectionString=""/>
+```
+Created a new class library project referenced by RMSDataManager (Web API)
+- Installed **Dapper** from NPM
+- Created an **SqlDataAccess** class to communicate with the database
+```
+internal class SqlDataAccess
+    {
+        public string GetConnectionString(string name)
+        {
+            return ConfigurationManager.ConnectionStrings[name].ConnectionString;
+        }
+
+        public List<T> LoadData<T, U>(string storedProcedure, U parameters, string connectionStringName)
+        { ... }
+
+        public void SaveData<T>(string storedProcedure, T parameters, string connectionStringName)
+        { ... }
+    }
+```
+- Created a **UserData** class to work with the SqlDataAccess class and the **spUserLookup** stored procedure
+```
+public class UserData
+{
+    public List<UserModel> GetUserById(string Id)
+    {
+        SqlDataAccess sql = new SqlDataAccess();
+
+        var p = new { Id = Id };
+
+        var output = sql.LoadData<UserModel, dynamic>("spUserLookup", p, "RMSData");
+        return output;
+    }
+}
+```
+Created a new class library project referenced by RMSDesktopUI (WPF app)
+- Created a **LoggedInUserModel** class and moved the API helpers and models from the WPF app to the class library
+- Updated the **APIHelper** class to get the logged in user info using the user's token
+```
+private ILoggedInUserModel _loggedInUser;
+
+public APIHelper(ILoggedInUserModel loggedInUser)
+{
+    InitializeClient();
+    _loggedInUser = loggedInUser;
+}
+
+...
+
+public async Task GetLoggedInUserInfo(string token)
+{
+    apiClient.DefaultRequestHeaders.Clear();
+    apiClient.DefaultRequestHeaders.Accept.Clear();
+    apiClient.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("Application/json"));
+    apiClient.DefaultRequestHeaders.Add("Authorization", $"Bearer {token}");
+
+    using (HttpResponseMessage response = await apiClient.GetAsync("/api/User"))
+    {
+        if (response.IsSuccessStatusCode)
+        {
+            var result = await response.Content.ReadAsAsync<LoggedInUserModel>();
+            _loggedInUser.CreatedDate = result.CreatedDate;
+            _loggedInUser.EmailAddress = result.EmailAddress;
+            _loggedInUser.FirstName = result.FirstName;
+            _loggedInUser.LastName = result.LastName;
+            _loggedInUser.Id = result.Id;
+            _loggedInUser.Token = token;
+        }
+        else
+        {
+            throw new Exception(response.ReasonPhrase);
+        }
+    }
+}
+```
+- Updated the **Bootrstapper** file
+```
+ _container
+    .Singleton<IWindowManager, WindowManager>()
+    .Singleton<IEventAggregator, EventAggregator>()
+    .Singleton<ILoggedInUserModel, LoggedInUserModel>()
+    .Singleton<IAPIHelper, APIHelper>();
+```

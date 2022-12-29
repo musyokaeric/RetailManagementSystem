@@ -1,5 +1,7 @@
 ﻿using Caliburn.Micro;
 using RMSDesktopUI.Helpers;
+using RMSDesktopUI.Library.Api;
+using RMSDesktopUI.Library.Models;
 using RMSDesktopUI.ViewModels;
 using System;
 using System.Collections.Generic;
@@ -30,6 +32,7 @@ namespace RMSDesktopUI
             _container
                 .Singleton<IWindowManager, WindowManager>()
                 .Singleton<IEventAggregator, EventAggregator>()
+                .Singleton<ILoggedInUserModel, LoggedInUserModel>()
                 .Singleton<IAPIHelper, APIHelper>();
 
             GetType().Assembly.GetTypes()
